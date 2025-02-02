@@ -6,25 +6,26 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --only=production \
-    && npm cache clean --force \
-    && rm -rf /tmp/*
+RUN npm install --only=production
 
 # Copy the rest of the application code and build the application
 COPY . .
 RUN npm run build
 
 # Stage 2: Production
-FROM scratch
+FROM alpine:3.14
 WORKDIR /app
+
+# Install only Node.js runtime
+RUN apk add --no-cache nodejs
 
 # Copy only the necessary files from the builder stage
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
 
-# Install minimal dependencies and remove unnecessary files
-RUN rm -rf /tmp/*
+# Clean up unnecessary files
+RUN rm -rf /var/cache/apk/*
 
 EXPOSE 3000
 CMD ["node", "build/index.js"]
