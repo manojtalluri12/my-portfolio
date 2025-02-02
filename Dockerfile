@@ -1,15 +1,15 @@
 # Stage 1: Builder
-FROM node:16-slim AS builder
+FROM node:16-alpine AS builder
 WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm install --only=production
 COPY . .
 RUN npm run build
 
 # Stage 2: Production
-FROM node:16-slim AS final
+FROM node:16-alpine AS final
 WORKDIR /app
 
 # Copy only the necessary files
