@@ -47,7 +47,7 @@ const Home = () => {
     <div className="Header">
       <div className="Pages">
         <div className="beforeit">
-          <h1 className="inko">I'm Manoj</h1>
+          <h1 className="inko">I'm Manoj kumar</h1>
           <h3 className="in">Analyst II software engineer at DXC Technology</h3>
           <div className="onels">
             <Link
